@@ -17,7 +17,7 @@ function Login() {
 
     } else {
 
-        document.getElementById('resultado').innerHTML = `Bienvenido, ${usuario}`;
+        alert(`Bienvenido, ${usuario}`);
     }
 
     
