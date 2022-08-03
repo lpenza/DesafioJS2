@@ -1,25 +1,37 @@
 
 
+
+let usuariosRegistrados = []
+
+
 function Login() {
 
     let usuario = document.getElementById('user').value;
     let contrasenia = document.getElementById('pass').value;
-    if (usuario === '' || contrasenia === '') {
-        if (usuario === '') {
-            document.getElementById('resultado').innerHTML = "Usuario requerido";
-        }
-        if (contrasenia === '') {
-            document.getElementById('resultado').innerHTML = "Contraseña requerida"
-        }
-        if(usuario===''&& contrasenia===''){
-            document.getElementById('resultado').innerHTML = "Usuario y contraseña requeridos";
-        }
+    let existe
+    let valido = false
+    let agregar
 
+    if (usuario === '') {
+        document.getElementById('resultado').innerHTML = "Usuario requerido";
     } else {
+        existe = usuariosRegistrados.indexOf(usuario)
+        if (existe === -1) {
+            if (contrasenia === '') {
+                document.getElementById('resultado').innerHTML = "Contraseña requerida"
+            } else {
 
-        alert(`Bienvenido, ${usuario}`);
+                
+
+                usuariosRegistrados.push(usuario)
+            }
+        } else {
+            alert(`Bienvenido, ${usuario}`);
+        }
     }
 
-    
 }
+
+
+
 
