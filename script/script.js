@@ -1,47 +1,120 @@
 
 
 
-    let agregar
-    let usuariosRegistrados = []
+let agregar
+const usuariosRegistrados = []
+const botonLogin = document.getElementById("botonLogin")
+const botonRegister = document.getElementById('botonRegister')
+const form = document.getElementById("idForm")
+const resultadoCard = document.getElementById("resultadoCard")
+let datosOk = false
 
-const registroUsuario = (usu) => {
-    do {
-        agregar = prompt('Usuario no registrado, registrar?S/N').toLowerCase()
-        debugger
-    } while (agregar !== 's' && agregar !== 'n')
 
-    if (agregar === 's') {
-        debugger
-        usuariosRegistrados.push(usu)
-        document.getElementById('resultado').innerHTML = "Registro correcto"
-    }else{
-        alert('Gracias por visitarnos')
+
+class Usuario {
+    constructor(usu, pass) {
+        this.usu = usu
+        this.pass = pass
     }
-
 }
 
-function Login() {
 
+/* Valido datos */
+const validarInfo = (usu) => {
+    if (usu.usu === '') {
+        resultadoCard.innerHTML = "Usuario requerido";
+    }
+    else {
+        existe = usuariosRegistrados.indexOf(usu)
+        if (existe === -1) {
+            if (usu.pass === '') {
+                resultadoCard.innerHTML = "Contraseña requerida"
+            } else {
+                datosOk = true
+            }
+        }
+    }
+}
+
+
+
+/* Registro Usuario */
+botonRegister.addEventListener('click', () => {
     let usuario = document.getElementById('user').value;
     let contrasenia = document.getElementById('pass').value;
-    let existe
-
-    if (usuario === '') {
-        document.getElementById('resultado').innerHTML = "Usuario requerido";
-    } else {
-        existe = usuariosRegistrados.indexOf(usuario)
-        if (existe === -1) {
-            if (contrasenia === '') {
-                document.getElementById('resultado').innerHTML = "Contraseña requerida"
-            } else {
-                registroUsuario(usuario)
+    const unUsuario = new Usuario(usuario, contrasenia)
+    validarInfo(unUsuario)
+    if (datosOk) {
+        let usuarioRegistrado = false
+        usuariosRegistrados.forEach(unUsu => {
+            if (unUsu.usu === unUsuario.usu && unUsu.pass === unUsuario.pass) {
+                resultadoCard.innerHTML = "Usuario antes registrado"
+                usuarioRegistrado = true
             }
-        } else {
-            alert(`Bienvenido, ${usuario}`);
+            
+
+        })
+        if (!usuarioRegistrado) {
+            registroUsuario(unUsuario)
         }
     }
 
+})
+
+
+
+
+const registroUsuario = (usu) => {
+    console.log(usuariosRegistrados)
+    usuariosRegistrados.push(usu)
+    console.log(usuariosRegistrados)
+    resultadoCard.innerHTML = "Registro correcto"
 }
+
+
+/* Login */
+form.addEventListener('submit', (e) => {
+    e.preventDefault()
+    let usuario = document.getElementById('user').value;
+    let contrasenia = document.getElementById('pass').value;
+    const unUsuario = new Usuario(usuario, contrasenia)
+    datosOk = false
+    validarInfo(unUsuario)
+    if (datosOk) {
+        let usuarioRegistrado = false
+        usuariosRegistrados.forEach(unUsu => {
+            if (unUsu.usu === unUsuario.usu && unUsu.pass === unUsuario.pass) {
+                resultadoCard.innerHTML = "Usuario antes registrado"
+                usuarioRegistrado = true
+            }
+            if (usuarioRegistrado) {
+                resultadoCard.innerHTML = `
+                    <div class="card" style="width: 18rem; margin:3px;">
+                        <div class="card-body">
+                            <h5 class="card-title">Bienvenido,${unUsuario.usu}</h5>
+                        </div>
+                    </div>
+                    
+                    `
+            }
+
+        }
+
+
+        )
+
+        if (!usuarioRegistrado) {
+            resultadoCard.innerHTML = "Usuario no registrado"
+
+        }
+    }
+
+})
+
+
+
+
+
 
 
 
